@@ -8,35 +8,37 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/tasks")
 public class TaskController {
 
     private final List<Task> TaskList = new ArrayList<>();
 
     public TaskController(){
         TaskList.addAll(List.of(
-                new Task(1, "a", "b", Priority.LOW, Status.CREATED, LocalDateTime.now()),
-                new Task(2, "a", "b", Priority.HIGH, Status.CREATED, LocalDateTime.now())
+                new Task("a", "b", Priority.LOW, Status.CREATED, LocalDateTime.now()),
+                new Task("a", "b", Priority.HIGH, Status.CREATED, LocalDateTime.now()),
+                new Task()
         ));
     }
 
-    @GetMapping("/tasks")
+    @GetMapping
     Iterable<Task> getTasks(){
         return TaskList;
     }
 
     @DeleteMapping("/{id}")
-    void deleteTask(@PathVariable int id){
-        TaskList.removeIf(t -> t.getId() == id);
+    void deleteTask(@PathVariable Long id){
+        TaskList.removeIf(t -> Objects.equals(t.getId(), id));
     }
 
-    @GetMapping("/tasks/{id}")
-    Optional<Task> getTaskByID(@PathVariable int id){
+    @GetMapping("/{id}")
+    Optional<Task> getTaskByID(@PathVariable Long id){
         for (Task t : TaskList){
-            if (t.getId() == id){
+            if (Objects.equals(t.getId(), id)){
                 return Optional.of(t);
             }
         }
