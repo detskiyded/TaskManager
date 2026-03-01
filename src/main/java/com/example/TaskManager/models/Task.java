@@ -2,13 +2,17 @@ package com.example.TaskManager.models;
 
 import java.time.LocalDateTime;
 
+
 public class Task {
-    int id;
-    String title;
-    String description;
-    Priority priority;
-    Status status;
-    LocalDateTime createdAt;
+    private static long increment = 1;
+
+    private final long id;
+
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private LocalDateTime createdAt;
 
     public void getInfo(){
         System.out.println("Task ID: " + id);
@@ -19,8 +23,17 @@ public class Task {
         System.out.println("Created at: " + createdAt);
     }
 
-    public Task(int i, String t, String d, Priority p, Status s, LocalDateTime ldt){
-        this.id = i;
+    public Task(){
+        this.id = increment++;
+        this.title = "Some task";
+        this.description = "Some description";
+        this.priority = Priority.LOW;
+        this.status = Status.CREATED;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Task(String t, String d, Priority p, Status s, LocalDateTime ldt){
+        this.id = increment++;
         this.title = t;
         this.description = d;
         this.priority = p;
@@ -28,7 +41,7 @@ public class Task {
         this.createdAt = ldt;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
