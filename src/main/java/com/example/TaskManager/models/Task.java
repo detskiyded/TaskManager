@@ -1,14 +1,24 @@
 package com.example.TaskManager.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Task {
-    int id;
-    String title;
-    String description;
-    Priority priority;
-    Status status;
-    LocalDateTime createdAt;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String title;
+    private String description;
+    private Priority priority;
+    private Status status;
+    private LocalDateTime createdAt;
 
     public void getInfo(){
         System.out.println("Task ID: " + id);
@@ -19,8 +29,15 @@ public class Task {
         System.out.println("Created at: " + createdAt);
     }
 
-    public Task(int i, String t, String d, Priority p, Status s, LocalDateTime ldt){
-        this.id = i;
+    public Task(){
+        this.title = "Some task";
+        this.description = "Some description";
+        this.priority = Priority.LOW;
+        this.status = Status.CREATED;
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Task(String t, String d, Priority p, Status s, LocalDateTime ldt){
         this.title = t;
         this.description = d;
         this.priority = p;
@@ -28,7 +45,7 @@ public class Task {
         this.createdAt = ldt;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
