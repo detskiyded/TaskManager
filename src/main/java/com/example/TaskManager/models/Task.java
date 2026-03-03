@@ -1,12 +1,18 @@
 package com.example.TaskManager.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.time.LocalDateTime;
 
-
+@Entity
 public class Task {
-    private static long increment = 1;
 
-    private final long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String title;
     private String description;
@@ -24,7 +30,6 @@ public class Task {
     }
 
     public Task(){
-        this.id = increment++;
         this.title = "Some task";
         this.description = "Some description";
         this.priority = Priority.LOW;
@@ -33,7 +38,6 @@ public class Task {
     }
 
     public Task(String t, String d, Priority p, Status s, LocalDateTime ldt){
-        this.id = increment++;
         this.title = t;
         this.description = d;
         this.priority = p;
