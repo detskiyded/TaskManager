@@ -52,9 +52,9 @@ public class TaskController {
     @PutMapping("/{id}")
     ResponseEntity<Task> putTask(@PathVariable Long id,
                                  @RequestBody Task task){
-        return (!taskRepo.existsById(id))
-                ? new ResponseEntity<>(taskRepo.save(task), HttpStatus.CREATED)
-                : new ResponseEntity<>(taskRepo.save(task), HttpStatus.OK);
+        return (taskRepo.existsById(id))
+                ? new ResponseEntity<>(taskRepo.save(task), HttpStatus.OK)
+                : new ResponseEntity<>(taskRepo.save(task), HttpStatus.CREATED);
     }
 
 }
