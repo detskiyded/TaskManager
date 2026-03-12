@@ -57,9 +57,7 @@ public class Task {
         return description;
     }
 
-    public Priority getPriority() {
-        return priority;
-    }
+    public Priority getPriority() {return priority;}
 
     public Status getStatus() {
         return status;
