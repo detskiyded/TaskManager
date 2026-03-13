@@ -4,30 +4,40 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter @Setter
     private long id;
 
+    @NotBlank (message = "Title can't be blank!")
+    @Size(min = 5, max = 50)
+    @Getter @Setter
     private String title;
-    private String description;
-    private Priority priority;
-    private Status status;
-    private LocalDateTime createdAt;
 
-    public void getInfo(){
-        System.out.println("Task ID: " + id);
-        System.out.println("Title: " + title);
-        System.out.println("Description: " + description);
-        System.out.println("Priority: " + priority);
-        System.out.println("Status: " + status);
-        System.out.println("Created at: " + createdAt);
-    }
+    @Size(min = 0, max = 150)
+    @Getter @Setter
+    private String description;
+
+    @NotNull
+    @Getter @Setter
+    private Priority priority;
+
+    @NotNull
+    @Getter @Setter
+    private Status status;
+
+    @NotNull
+    @Getter @Setter
+    private LocalDateTime createdAt;
 
     public Task(){
         this.title = "Some task";
@@ -44,26 +54,12 @@ public class Task {
         this.status = s;
         this.createdAt = ldt;
     }
-
-    public Long getId() {
-        return id;
+    public Task(String t, String d, Priority p, Status s){
+        this.title = t;
+        this.description = d;
+        this.priority = p;
+        this.status = s;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Priority getPriority() {return priority;}
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
 }
