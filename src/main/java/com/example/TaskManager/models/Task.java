@@ -19,11 +19,11 @@ public class Task {
     private long id;
 
     @NotBlank (message = "Title can't be blank!")
-    @Min(5) @Max(50)
+    @Size(min = 5, max = 50)
     @Getter @Setter
     private String title;
 
-    @Max(100)
+    @Size(min = 0, max = 150)
     @Getter @Setter
     private String description;
 
@@ -53,6 +53,13 @@ public class Task {
         this.priority = p;
         this.status = s;
         this.createdAt = ldt;
+    }
+    public Task(String t, String d, Priority p, Status s){
+        this.title = t;
+        this.description = d;
+        this.priority = p;
+        this.status = s;
+        this.createdAt = LocalDateTime.now();
     }
 
 }

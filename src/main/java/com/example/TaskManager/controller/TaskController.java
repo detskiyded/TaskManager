@@ -4,7 +4,6 @@ import com.example.TaskManager.models.Task;
 import com.example.TaskManager.service.ITaskService;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteTask(@Validated @PathVariable Long id){
+    void deleteTask(@PathVariable Long id){
         ITaskService.deleteTask(id);
     }
 
