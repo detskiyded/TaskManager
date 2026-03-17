@@ -23,7 +23,7 @@ public class Task {
     @Getter @Setter
     private String title;
 
-    @Size(min = 0, max = 150)
+    @Size(max = 150)
     @Getter @Setter
     private String description;
 
