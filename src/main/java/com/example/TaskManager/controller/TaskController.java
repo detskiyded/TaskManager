@@ -3,6 +3,7 @@ package com.example.TaskManager.controller;
 import com.example.TaskManager.models.Task;
 import com.example.TaskManager.service.ITaskService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,23 +25,23 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    void deleteTask(@PathVariable Long id){
+    void deleteTask(@Valid @PathVariable Long id){
         ITaskService.deleteTask(id);
     }
 
     @GetMapping("/{id}")
-    Optional<Task> getTaskByID(@PathVariable Long id){
+    Optional<Task> getTaskByID(@Valid @PathVariable Long id){
         return ITaskService.getTaskByID(id);
     }
 
     @PostMapping
-    Task postTask(@RequestBody Task task){
+    Task postTask(@Valid @RequestBody Task task){
         return ITaskService.postTask(task);
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Task> putTask(@PathVariable Long id,
-                                 @RequestBody Task task){
+    ResponseEntity<Task> putTask(@Valid @PathVariable Long id,
+                                 @Valid @RequestBody Task task){
         return ITaskService.putTask(id, task);
     }
 
