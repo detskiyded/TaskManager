@@ -1,5 +1,7 @@
 package com.example.TaskManager.models;
 
+import com.example.TaskManager.dto.Priority;
+import com.example.TaskManager.dto.Status;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

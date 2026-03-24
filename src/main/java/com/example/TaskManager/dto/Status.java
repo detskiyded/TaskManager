@@ -1,4 +1,4 @@
-package com.example.TaskManager.models;
+package com.example.TaskManager.dto;
 
 public enum Status {
     CREATED,
