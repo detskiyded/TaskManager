@@ -1,7 +1,5 @@
 package com.example.TaskManager.exception;
 
-import com.example.TaskManager.models.Priority;
-import com.example.TaskManager.models.Status;
 import lombok.*;
 
 import java.time.LocalDateTime;

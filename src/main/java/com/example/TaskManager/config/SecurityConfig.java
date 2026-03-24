@@ -1,10 +1,10 @@
 package com.example.TaskManager.config;
 
+import com.example.TaskManager.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.SecurityBuilder;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,7 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,8 +22,16 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final PasswordEncoder pwEncoder =
-            PasswordEncoderFactories.createDelegatingPasswordEncoder();
+    @Bean
+    public PasswordEncoder pwEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    private final CustomUserDetailsService cuds;
+
+    public SecurityConfig(CustomUserDetailsService cuds){
+        this.cuds = cuds;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -32,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-
+                .userDetailsService(cuds)
                 // Отключаем CSRF для REST
                 .csrf(AbstractHttpConfigurer::disable)
 
@@ -44,22 +52,29 @@ public class SecurityConfig {
 
                 // Правила авторизации
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/tasks/**").authenticated() // Все задачи - только авторизованным
-                        .anyRequest().permitAll() // Остальное - всем
+                                .requestMatchers(HttpMethod.DELETE, "/tasks/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST, "/tasks/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/tasks/**").hasRole("ADMIN")
+
+                                .requestMatchers(HttpMethod.GET, "/tasks/**").hasRole("USER")
+
+                                .requestMatchers("/auth/**").permitAll()
+                                .anyRequest().permitAll()
                 );
         return http.build();
     }
 
     @Bean
     UserDetailsService authentication(){
+
         UserDetails admin = User.builder()
                 .username("admin")
-                .password(pwEncoder.encode("adminpass"))
+                .password(pwEncoder().encode("adminpass"))
                 .roles("USER", "ADMIN")
                 .build();
         UserDetails user = User.builder()
                 .username("user")
-                .password(pwEncoder.encode("qwerty"))
+                .password(pwEncoder().encode("qwerty"))
                 .roles("USER")
                 .build();
 
