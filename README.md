@@ -14,7 +14,7 @@ REST API для управления задачами. :)
 
 1. **Клонировать:**
    ```bash
-   git clone https://github.com/username/TaskManager.git
+   git clone https://github.com/detskiyded/TaskManager.git
    cd TaskManager
    ```
 
